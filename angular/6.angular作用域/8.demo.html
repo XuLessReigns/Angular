@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../bower_components/ionic/release/css/ionic.css">
+    <style>
+        .list p span{
+            height: 30px;
+            width: 30px;
+            display: inline-block;
+            font-size: 20px;
+            line-height: 30px;
+            text-align: center;
+            color: #fff;
+            background: gray;
+        }
+        .list p span input{
+            height: 30px;
+            width: 30px;
+            border: 1px solid #ccc;
+            font-size: 20px;
+            line-height: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body ng-controller="one">
+<header class="bar bar-assertive ">
+    <a class="title">购物车</a>
+    <i class="button button-clear ">结算</i>
+</header>
+<header class="bar bar-dark has-header">
+    <a class="title">商品数量 : {{titleNum}} 应付总金额: {{titlePrice}}</a>
+</header>
+<section class="scroll-content overflow-scroll
+ has-header has-subheader">
+    <ul class="list">
+        <li class="item item-thumbnail-left item-icon-right" ng-repeat="n in data">
+            <img ng-src="{{n.imgSrc}}">
+            <p>{{n.pName}}</p>
+            <p>{{n.desc}}</p>
+            <p>价格：￥{{n.price}}</p>
+            <p>数量：
+                <span ng-click="dec($index)">-</span>
+                <span class="center">
+                 <input type="text" ng-model="n.num" class="input">
+                </span>
+                <span ng-click="add($index)">+</span>
+            </p>
+            <i class="icon ion-android-delete" ng-click="del($index)" style="font-size: 20px"></i>
+        </li>
+    </ul>
+
+</section>
+<footer class="tabs tabs-dark tabs-icon-top">
+    <div class="tab-item">
+        <i class="icon ion-ios-home"></i>
+        首页
+    </div>
+    <div class="tab-item">
+        <i class="icon ion-navicon-round"></i>
+        分类
+    </div>
+    <div class="tab-item has-badge">
+        <i class="icon ion-ios-cart"></i>
+        <i class="badge badge-assertive">{{titleNum}}</i>
+        购物车
+    </div>
+    <div class="tab-item">
+        <i class="icon ion-person"></i>
+        我的秀
+    </div>
+    <div class="tab-item">
+        <i class="icon ion-more"></i>
+        更多
+    </div>
+
+</footer>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .controller("one",function ($scope) {
+                    $scope.data = [
+                        {
+                            "imgSrc":"assets/77f4.jpg",
+                            "pName":"第一个商品",
+                            "desc":"描述1",
+                            "price":134,
+                            "num":1
+                        },
+                        {
+                            "imgSrc":"assets/93b92.jpg",
+                            "pName":"第二个商品",
+                            "desc":"描述2",
+                            "price":634,
+                            "num":1
+                        },
+                        {
+                            "imgSrc":"assets/a13.jpg",
+                            "pName":"第三个商品",
+                            "desc":"描述3",
+                            "price":135,
+                            "num":1
+                        },
+                        {
+                            "imgSrc":"assets/e2.jpg",
+                            "pName":"第四个商品",
+                            "desc":"描述4",
+                            "price":132,
+                            "num":1
+                        },
+                        {
+                            "imgSrc":"assets/e54.jpg",
+                            "pName":"第五个商品",
+                            "desc":"描述5",
+                            "price":122,
+                            "num":1
+                        },
+                        {
+                            "imgSrc":"assets/77f4.jpg",
+                            "pName":"第六个商品",
+                            "desc":"描述6",
+                            "price":111,
+                            "num":1
+                        }
+                    ];
+                    function change(){
+                        $scope.titleNum = 0;
+                        $scope.titlePrice = 0;
+//                        $scope.data.forEach(function (data,index) {
+//                            $scope.titleNum+=$scope.data[index].num;
+//                            $scope.titlePrice+=$scope.data[index].price*$scope.data[index].num;
+//                        })
+                        angular.forEach($scope.data,function (data,index) {
+                            $scope.titleNum+=$scope.data[index].num;
+                            $scope.titlePrice+=$scope.data[index].price*$scope.data[index].num;
+                        })
+                    }
+                    change();
+                    $scope.add = function (index) {
+                        $scope.data[index].num++;
+                        change();
+                    }
+                    $scope.dec = function (index) {
+                        if($scope.data[index].num<=1){
+                            $scope.data[index].num = 1;
+                        }else {
+                            $scope.data[index].num--;
+                        }
+                        change();
+                    }
+                    $scope.del = function (index) {
+                        $scope.data.splice(index,1);
+                        change();
+                    }
+//                    angular.element(document.getElementsByClassName(".input")[0]).blur(function () {
+//                        change();
+//                    })
+                    $scope.$watch("titlePrice",function (n,o) {
+                        if(n>10000){
+                            console.log("恭喜你突破10000，送你1000积分")
+                        }
+                    })
+                });
+    })()
+</script>
+</body>
+</html>

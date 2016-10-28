@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>控制器之间的继承</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+
+<div class="well" ng-controller="oneCtrl">
+    {{msg}} {{txt}}
+    <div  class="well" ng-controller="twoCtrl">
+        {{msg}}{{txt}}
+        <div class="well"  ng-controller="threeCtrl">
+            {{msg}}{{txt}}
+        </div>
+    </div>
+</div>
+
+
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+        //当我们的html元素出现嵌套关系的时候，内层继承外层的变量
+        //造成值的重写问题
+                .controller("oneCtrl",function($scope,$rootScope){
+                    $scope.msg = "helle one!";
+                    //$rootScope是一个angular的内部类，
+                    //$rootScope的作用，是用于根的模块的数据缓存,用于模块与模块之间数据共享
+
+
+                })
+                .controller("twoCtrl",function($scope){
+//                    $scope.msg = "helle two!"
+                })
+                .controller("threeCtrl",function($scope,$rootScope){
+//                    $scope.msg = "helle three!"
+                    $rootScope.txt = "hello root";
+                })
+
+    })()
+</script>
+</body>
+</html>

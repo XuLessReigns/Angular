@@ -1,0 +1,5 @@
+1.创建一个SPA宿主页面：index.html
+2.在页面引用  angular.js
+3.创建项目的根模块  angular.module("demo",[]);
+4.在页面的标签上加上ng-app这个标识 ng-app=“根模块名”
+5.angular进入自动启动过程

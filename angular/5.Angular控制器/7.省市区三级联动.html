@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1,0,user-scalable=1.0">
+    <title>三级联动</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-controller="oneCtrl">
+
+<section class="well">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-3 control-label">省：</label>
+            <div class="col-md-6 ">
+                <select class="form-control" ng-model="myData.province"
+                ng-options="p.province for p in CityData"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">市：</label>
+            <div class="col-md-6 ">
+                <select class="form-control" ng-model="myData.city"
+                        ng-options="c.city for c in myData.province.cities"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">区：</label>
+            <div class="col-md-6 ">
+                <select class="form-control" ng-model="myData.area"
+                ng-options="a for a in myData.city.areas"></select>
+            </div>
+        </div>
+    </form>
+</section>
+<div class="well">
+  <pre>
+      {{myData |json}}
+  </pre>
+</div>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .controller("oneCtrl",function ($scope) {
+                    $scope.myData = {
+                        province:"",
+                        city:"",
+                        area:""
+                    }
+                    $scope.CityData = [
+                        {"province":"省1","cities":[
+                            {"city":"市1A","areas":["区1A1","区1A2"]},
+                            {"city":"市1B","areas":["区1B1","区1B2"]}
+                        ]},
+                        {"province":"省2","cities":[
+                            {"city":"市2A","areas":["区2A1","区2A2"]},
+                            {"city":"市2B","areas":["区2B1","区2B2"]}
+                        ]},
+                        {"province":"省3","cities":[
+                            {"city":"市3A","areas":["区3A1","区3A2"]},
+                            {"city":"市3B","areas":["区3B1","区3B2"]}
+                        ]}
+                    ];
+
+                });
+    })();
+</script>
+</body>
+</html>

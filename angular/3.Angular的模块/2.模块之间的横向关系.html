@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1,0,user-scalable=1.0">
+    <title>angular的模块创建</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        var app = angular.module("demo",[]);
+        //第二级模块
+        //这个横向的模块关系的调用，在angular中是采用DI的方式来调用
+        var ctrl = app.controller("oneCtrl",function (oneServ) {
+//            var s = new Serv();
+            //把依赖的类的创建，不由自己来创建，由第三方来创建，这个就是DI
+            //需要对s进行内存的管理
+            //angular 的内存（注射器）大管家  $injector
+        });
+        //第二级模块,与onectrl是同一级模块
+        var  serv = app.service("oneServ",function () {
+
+        });
+    })();
+</script>
+</body>
+</html>

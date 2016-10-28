@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<one>
+    <two></two>
+</one>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .directive("one",function () {
+                    return {
+                        restrict:"AE",//严格区分大小写
+                        template:"<div class='well'>hello one<div ng-transclude></div></div>",
+                        replace:false,
+                        transclude:true
+                    }
+                })
+                .directive("two",function () {
+                    return {
+                        restrict:"AE",
+                        template:"<div class='well'>hello two</div>"
+                    }
+                });
+    })()
+</script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+angular1.x  对于指令的定义问题？
+
+Directive(1.指令，命令  2.组件（从原生包装过的指令）)
+
+一种内置的指令  ng-* 放在html标签的  ng-app ng-controller ng-click
+
+angular 代码的可复用 通过扩展html标签的方式，使用可以申明式的UI
+
+在angular中的组件，不是一个html代码块，他是一个html+js+逻辑
+
+angular两大特色：mvvm （data为中心）指令（通过扩展html标签的方式，实现了业务的可复用，封装了js，css，html，用指令就像用html标签一样简单）
+
+一个完整的指令：js（controller，service），html ，css->完全独立的业务模块
+
+
+-----------------------1--------------------------
+自定义指令  link
+
+ .directive("hello",function () {
+                    return {//指令的配置项目
+                        //A:attribute
+                        //E:element
+                        //C:class
+                        //M:注释
+                        restrict:"AECM",//用于定义（限制）自定义指令在页面上的创建方式
+                        template:"<div class='well'>hello</div><div ng-transclude></div>",//模板 template内联//外联templateUrl
+                        replace:false,//默认为true，覆盖,false:不覆盖
+                        transclude:true//转移
+                    }
+                })
+                .directive("login",function () {
+                    return {
+                        scope:{},
+                        restrict:"AE",
+                        templateUrl:"app/templates/login-tips.html",
+
+                        //link方法是angular编译的最后一步
+                        //link方法相当于 指令内部模板的 controller
+                        link:function (scope,element,attr,ctrls) {
+                            console.log(attr["pc"]);
+                            scope.hc = attr["pc"];
+                            scope.title = attr["tl"];
+                            //scope == $scope 他是template与link之间的作用域
+                            //element == jqlite（“hello”）=== $("hello") === angular.element(document.getElementByTagName（“hello”）
+
+                            console.log(element.children());
+                        }
+                    }
+                });
+
+
+----------------------------2----------------------
+指令之间的嵌套
+
+<one>
+    <two></two>
+</one>
+
+.directive("one",function () {
+                    return {
+                        restrict:"AE",//严格区分大小写
+                        template:"<div class='well'>hello one<div ng-transclude></div></div>",
+                        replace:false,
+                        transclude:true
+                    }
+                })
+                .directive("two",function () {
+                    return {
+                        restrict:"AE",
+                        template:"<div class='well'>hello two</div>"
+                    }
+                });
+
+
+——-------------------3--------------------------
+独立作用域的指令  scope{}//表示创建一个独立作用域的指令
+
+.directive("hello",function () {
+                   return {
+                       scope:{},//表示创建一个独立作用域的指令
+                       restrict:"AE",
+                       template:"<div class='well'><input type='text' ng-model='txt'>{{txt}}</div>"
+                   }
+                });
+
+
+------------------------4----------------------
+$compile     //link方法是angular编译的最后一步
+            //与compile 是同等作用 2选一就可以了
+
+.directive("hello",function () {
+                    return {
+                        restrict:"AE",
+                        template:"<div class='well'>hello</div>",
+
+                        //指令解析的最后调用的一个方法
+                        compile:function () {
+                            return {
+                                //渲染到页面
+                                pre:function (scope,element,attr,ctrl) {
+                                    console.log("pre-link"+"---"+attr["cm"]);
+                                },
+                                post:function (scope,element,attr,ctrl) {
+                                    console.log("post-link"+"---"+attr["cm"]);
+                                }
+                            }
+                        },
+                         //link方法是angular编译的最后一步
+                        //与compile 是同等作用 2选一就可以了
+                        link:function (scope,element,attr,ctrls) {
+                            console.log("----link-----");
+                        }
+                    }
+                });
+
+
+-------------------------5--------------------------
+控制器与指令数据绑定
+
+<div ng-controller="one">
+    <hello tl="{{title}}" cm="login()"></hello>
+</div>
+<div ng-controller="two">
+    <hello tl="{{title}}" cm="login2()"></hello>
+</div>
+
+.directive("hello",function () {
+                    return {
+                        scope:{
+                            tl:"@",//@绑定字符串
+                            cm:"&"//&绑定方法
+                        },
+                        restrict:"AE",
+                        template:"<div class='well' ng-click='cm()'>{{tl}}</div>",
+//                        link:function (scope,element,attr) {
+//                            scope.tl = attr["tl"];
+//                        }
+                    }
+                })
+                .controller("one",function ($scope) {
+                    $scope.title = "one ctrl title";
+                    $scope.login = function () {
+                        alert(1);
+                    }
+                })
+                .controller("two",function ($scope) {
+                    $scope.title = "two ctrl title";
+                    $scope.login2 = function () {
+                        alert(2);
+                    }
+                });
+
+------------------------6--------------------
+指令与指令之间的关系
+
+ .directive("father",function () {
+                    return {
+
+                        restrict:"AE",
+                        template:"<div class='well' ng-transclude>father</div>",
+                        replace:false,
+                        transclude:true,
+                        //controller指令的内的controller，是用来提供公开的方法给其他关联指令调用的
+                        controller:function ($scope) {
+                            this.test = function () {
+                                alert("from father controller");
+                            }
+                        },
+                        link:function (scope,element,attr) {
+
+                        }
+                        
+                    }
+                })
+                .directive("son",function () {
+                    return {
+                        //?^  向上模糊查找，没找到不会报错
+                        require:"?^father",//require表示继承  后面接的是""或[]
+                        restrict:"AE",
+                        template:"<div class='well' ng-transclude>son</div>",
+                        replace:false,
+                        transclude:true,
+                        link:function (scope,element,attr,ctrl) {
+                            ctrl.test();
+                        }
+                    }
+                })
+                .directive("grandson",function () {
+                    return {
+                        require:["?^father","?^son"],//继承多个指令
+                        restrict:"AE",
+                        template:"<div class='well'>grandson</div>",
+                        link:function (scope,element,attr,ctrl) {//这时ctrl就是一个数组了
+                            ctrl[0].test();
+                        }
+                    }
+                });

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1,0,user-scalable=1.0">
+    <title>angular as</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-controller="one">
+
+<input type="text" ng-model="txt">
+{{txt}}
+<br>
+<input type="text" ng-model="userInfo.username">  {{userInfo.username}}<br>
+<input type="text" ng-model="userInfo.pass"> {{userInfo.pass}}<br>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .controller("one",function ($scope) {
+
+                    //txt值类型
+                    $scope.txt ="hi";
+
+                    $scope.userInfo = {
+                        username:"",
+                        pass:""
+                    };
+                    $scope.$watch("userInfo",function(n,o){
+                        console.log(1);
+                    },true);
+
+                    //$watch是用手动添加监视器
+                    //$watch（监视的对象（可以值类型/引用类型）val，监视有变化的回调方法:fn,true|false,为true的话对引用类型进行监控）
+                    //fn(新输入的值，缓存的过去值)
+                    $scope.$watch("txt",function (n,o) {
+                        console.log("新值："+ n + "旧值：" +o);
+                        if(n=="hello"){
+                            alert("欢迎光临！！！"+n);
+                        }
+                    });
+                });
+    })();
+</script>
+</body>
+</html>

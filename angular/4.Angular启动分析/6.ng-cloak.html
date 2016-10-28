@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" ng-app>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=1.0">
+    <title>ng-bind</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <style>
+        .ng-cloak{
+            display: none;
+        }
+    </style>
+</head>
+<body class="ng-cloak">
+
+<input type="text" ng-model="txt">
+<span>{{txt}}</span>
+<input type="text" ng-model="txt2">
+<span>{{txt2}}</span>
+<!--<span ng-bind="txt"></span>-->
+
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+
+</script>
+</body>
+</html>

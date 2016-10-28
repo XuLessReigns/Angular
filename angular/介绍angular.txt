@@ -1,0 +1,18 @@
+缺点：
+mvc+指令的设计  组件化开发  相冲突
+
+www.bootcdn.cn  国外框架地址  开源库
+
+三大特点：
+
+双向数据绑定
+mvc
+构建可复用组件
+
+四大件：路由 view controller services
+两小件：$http  $scope
+
+一个view只能有一个controller
+
+
+拿到页面我们应该看到这样的

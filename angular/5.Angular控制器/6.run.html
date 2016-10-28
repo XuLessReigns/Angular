@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1,0,user-scalable=1.0">
+    <title>angular as</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        //run：是angular中的main方法,是整个angular的入口方法
+        //run只会在整个angular生命周期内，只会调用一次
+        angular.module("demo",[])
+                //整个程序级别
+                .run(function () {
+                    console.log("hello run");
+                    //条件的判断 localstorage
+                    window.localStorage.setItem("ng","haha");
+                });
+    })();
+</script>
+</body>
+</html>

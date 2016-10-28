@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="com.bj.shop">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../bower_components/ionic/release/css/ionic.css">
+</head>
+<body ng-controller="searchController">
+<header class="bar bar-assertive item-input-inset">
+    <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search" ng-blur="search()" placeholder="请输入搜索关键字">
+    </label>
+    <i class="button button-clear">取消</i>
+</header>
+<section class="scroll-content overflow-scroll has-header">
+    <ul class="list">
+        <li class="item item-thumbnail-left" ng-repeat="n in productList">
+            <img ng-src="{{n.goodsListImg}}" alt="">
+            <p>{{n.goodsName}}</p>
+            <p>{{n.className}}</p>
+            <p>{{n.price}}</p>
+        </li>
+    </ul>
+</section>
+
+
+
+<script src="../node_modules/angular/angular.js"></script>
+<script src="app/controller/com.bj.shop.controller.js"></script>
+<script src="app/service/com.bj.shop.service.js"></script>
+<script src="app/app-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<hello cm="hi"></hello>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .directive("hello",function () {
+                    return {
+                        restrict:"AE",
+                        template:"<div class='well'>hello</div>",
+
+                        //指令解析的最后调用的一个方法
+                        compile:function () {
+                            return {
+                                //渲染到页面
+                                pre:function (scope,element,attr,ctrl) {
+                                    console.log("pre-link"+"---"+attr["cm"]);
+                                },
+                                post:function (scope,element,attr,ctrl) {
+                                    console.log("post-link"+"---"+attr["cm"]);
+                                }
+                            }
+                        },
+                         //link方法是angular编译的最后一步
+                        //与compile 是同等作用 2选一就可以了
+                        link:function (scope,element,attr,ctrls) {
+                            console.log("----link-----");
+                        }
+                    }
+                });
+    })()
+</script>
+</body>
+</html>

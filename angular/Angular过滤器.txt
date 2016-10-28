@@ -1,0 +1,98 @@
+ 
+
+<div class="well">
+    <!--currency-->
+    {{curr | currency:"RMB"}}---------------------
+    {{curr_new}}
+</div>
+<div class="well">
+    <!--currency-->
+    {{mydate | date}}---------------------
+    {{date_new}}
+</div>
+<div class="well">
+    <!--currency-->
+    <pre>
+        {{json | json}}
+         ---------------------
+        {{json_new}}
+    </pre>
+
+</div>
+
+<div class="well">
+    <pre>
+        {{json | limitTo:1 | json}}
+         ---------------------
+        {{"afafdfasdf"|limitTo:3}}
+        ---------------------
+        {{limitTo_new}}
+    </pre>
+</div>
+----------------------------1------------------------
+
+.controller("one",function ($scope,$filter) {
+                   //货币格式 filter currency
+                    $scope.curr = 1331324242424;
+                    //$filter("currency")(amount,symbol)
+                    $scope.curr_new = $filter("currency")(1331324242424,"RMB")
+
+---------------------------2----------------------------
+                    //2.对时间进行格式化  filter：date
+                    //{{date_expression | date:format}}
+                    $scope.mydate = new Date();
+                    //$filter('date')(date, format)
+                    $scope.date_new = $filter('date')($scope.mydate, "mediumTime")
+
+---------------------------3----------------------------
+                    //3.对json进行格式化  filter：json
+                    //{{ json_expression | json}}
+                    $scope.json = [
+                        {
+                            "name": "value",
+                            "age":18
+                        },
+                        {
+                            "name": "value",
+                            "age":19
+                        }
+                    ];
+                    //$filter('json')(object)
+                    $scope.json_new = $filter('json')($scope.json);
+
+---------------------------4----------------------------
+                    //4.limitTo对数组进行格式化
+                    //{{ limitTo_expression | limitTo : limit}}
+
+                    //$filter('limitTo')(input, limit)
+                    $scope.limitTo_new = $filter('limitTo')($scope.json,1);
+
+                });
+
+
+
+---------------------------5----------------------------
+//filter:类似模糊搜索
+//orderBy  排序
+orderBy:'price':false"-->按价格从小到大排序
+
+<tr ng-repeat="n in myJson | filter:txt | orderBy:'price':false">
+            <td>{{n.title}}</td>
+            <td>{{n.price}}</td>
+            <td>{{n.fubiao}}</td>
+            <td>{{n.author}}</td>
+            <td><a class="btn btn-danger">删除</a></td>
+        </tr>
+
+--------------------------6----------------------------
+自定义filter
+
+{{"hello"|test}}
+---------------
+angular.module("demo",[])
+                .filter("test",function () {
+                    return function (data) {
+                        //console.log(data);
+                        return data + " world";
+                    }
+                });

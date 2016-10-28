@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-controller="one">
+
+<input type="text" ng-model="txt">  {{txt}}
+
+{{date}}
+
+
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+      angular.module("demo",[])
+              .controller("one",["$scope","$interval",function (s,i) {
+                    s.date = new Date().toLocaleTimeString();
+                  console.log(s.date);
+                  //手动触发 dirty checking ->$scope.$apply（）
+                  //主动触发（ng-指令绑定值 && $服务类）
+
+                  //dirty checking 绑定的值与上一次缓存中的值有没有变化
+                  //如果有变化，数据会dirty
+                  //怎么才能知道绑定的值发生变化呢?
+
+                  //当我们在$scope上面绑定一个属性的时候，angular就会在这个属性上
+                  //添加一个$$watcher（）：多长时间后缓存一次数据
+                  //{{}}当我们使用 ng表达式的时候，angular在{{val}}绑定一个watcher
+
+                  //$digest loop 访问angular $watch list
+                  //while（）
+                  //$watcher会执行 指的比较。当这次比较的值不相等的时候，表示watcher的值需要进行数据同步
+                  //data $digest $watchlist date ->$watcher（）->把model-view之间的数据进行更新同步
+//                  setInterval(function(){
+//                      s.$apply(function(){
+//                          s.date = new Date().toLocaleTimeString();
+//                      })
+//                  },1000);
+                  //$interval(触发dirtychecking) == setInterval
+                  i(function () {
+                      s.date = new Date().toLocaleTimeString();
+                  });
+              }]);
+
+    })()
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+
+angular 适用于大型项目开发
+大型表单系统(ERP CRM , CMS , OA )
+业务系统复杂,数据多,表单结构复杂,是以业务为中心
+
+spa + cordova + ionic 开发hybrid app
+
+MVVM->双刃剑 2000
+
+
+webapp -> vue.js / jquery / swiper / amd/ cmd
+
+seajs rquire.js + jquery + swiper+touch.js
+
+
+商城管理系统
+angular 1.x + bootstrap
+
+10模块
+5个人
+
+
+
+

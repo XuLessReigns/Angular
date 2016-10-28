@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-controller="one">
+
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .controller("one",function ($http) {
+                    var url = "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=angular&json=1&p=3&sid=1461_21107_17001_21407_21378_21190_20929&req=2&cb=JSON_CALLBACK&csor=1&pwd=angula&_=1477454603449";
+                    $http({
+                        url:url,
+                        method:"JSONP"
+                    }).success(function (data) {
+                        console.log(data.s);
+                    }).error(function (data) {
+                        
+                    });
+                    
+                })
+    })()
+</script>
+</body>
+</html>

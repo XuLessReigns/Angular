@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>angular.element("exp") === $("expression")</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <style>
+        .box {
+            width: 100px; height: 100px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body ng-controller="oneCtrl">
+
+<div class="" id="bx"></div>
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/angular/angular.js"></script>
+
+<script>
+    (function(){
+        angular.module("demo",[])
+                .controller("oneCtrl",function($scope){
+                     //angular.element == $("#bx")
+                    //angular.element == jquery / $
+                    //当本页面中没有引用外部的jquery,angular.element == jqlite
+                     console.log(angular.element);
+                    //注意,不能在controller里面进行dom的操作
+                    //只能在自定义的指令里的link方法里面操作doc
+                     angular.element(document.getElementById("bx")).addClass("box")
+                    //angular.element("#bx").addClass("box")
+                })
+    })()
+</script>
+
+</body>
+</html>

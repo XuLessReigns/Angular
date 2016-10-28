@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1,0,user-scalable=1.0">
+    <title>angular的模块创建</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        //创建一个Angular的模块：第一个参数：模块名称，
+        // 第二个参数：demo模块所依赖的其他子模块列表
+        //模块的命名：唯一性  见名知意 cameral
+        //命名方法：com.bj.项目名称（com.bj.shopX）
+        var grandson = angular.module("grandson",[]);
+        var son = angular.module("son",["grandson"]);
+
+        //如果没有[],表示获取取名为demo的信息
+        //console.log(angular.module("demo"));
+
+        //模块的纵向关系
+        //在项目的根模块下使用
+        var root = angular.module("root",["son","grandson"]);
+        console.log(root);
+    })();
+</script>
+</body>
+</html>

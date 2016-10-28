@@ -1,0 +1,113 @@
+
+$rootscope:作用：全局缓存，解决数据共享的问题
+
+$comple ：作用：编译
+
+$scope的作用：
+	1.用于绑定view的抽象（属性和方法）
+	2.$scope是连接controller与view之间数据桥梁，是实现angular中的mvvm模块的核心类
+	3.$scope是实现双向数据绑定的关键类
+	4.$scope是用来监视view，Model之间的数据变化，并通知对方，从而实现view与Model之间的数据同步
+	5.$scope可以实现controller与controller之间的事件传递   js事件冒泡，事件捕获
+
+
+$scope的继承就是控制器的继承
+-----------------1--------------------
+区别：
+$scope作用域局限于控制器
+$rootscope作用域全局
+
+//$rootScope是一个angular的内部类，
+//$rootScope的作用，是用于根的模块的数据缓存,用于模块与模块之间数据共享
+
+
+-----------------2--------------------
+$scope作用域局限于控制器
+
+-----------------3--------------------
+$scope的继承就是控制器的继承
+
+-----------------4-------------------
+
+//$scope.$emit //是向上一级控制器发送事件 冒泡
+//$scope.$broadcast //向下传递事件 捕获
+//$scope.$on //用来接收事件的值
+ s.$emit("sendOne","a gift from two");
+ s.$broadcast("sendThree","a command from two");
+.controller("one",["$scope",function(s){
+                    s.$on("sendOne",function(event,data){
+                        s.msg = data;
+                    });
+
+                }])
+ .controller("three",["$scope",function(s){
+                    s.$on("sendThree",function(event,data){
+                        s.msg = data;
+                    });
+                }])
+-----------------5-------------------
+angular.module("demo",[])
+         .controller("one",function($scope,$interval){
+           $scope.date = new Date().toLocaleTimeString()
+
+          //手动触发dirty checking -> $scope.$appply()
+//主动触发(ng-指令绑定值 $服务类)/被动
+
+
+//dirty checking 绑定的值与上一次缓存中的值没有没有变化
+//如果有变化，数据dirty
+//怎么才能知道绑定的值发生了变化呢?
+
+//当我们在$scope上面绑定一个属性的时候，angular就会在这个属性上
+//添加一个$$watcher(): 多长时间后缓存一次数据。
+//{{}}当我们使用 ng表达式的时候，angular在{{val}}绑定一个watcher
+
+//$digest loop 访问angular $wather list
+//while()
+//$watcher会执行值的比较。当这次比较的值不相等的时候，表示watcher的值
+//需要进行数据同步
+// data $digest $watherlist date ->$wathe()->把model-view之间的数据进行更新同步
+// 2000 scope
+/*
+setInterval(function(){
+    //$scope.$apply : 是用来手动触发angular的dirtychecking
+    //$apply()- > $digest()-loop - > $watch
+    $scope.$apply(function(){
+        $scope.date = new Date().toLocaleTimeString();
+    });
+
+    console.log($scope.date);
+},1000);
+*/
+
+//$interval(触发dirtychecking) == setInterval
+
+
+                    $interval(function(){
+                        $scope.date = new Date().toLocaleTimeString()
+                    },1000);
+                })
+
+-----------------6-------------------
+angular.module("demo",[])
+                .controller("one",function ($scope) {
+                    $scope.txt = "hi";
+                    //$watch是用手动添加监视器
+                    //$watch（监视的对象（可以值类型/引用类型）val，监视有变化的回调方法:fn,true|false,(true对引用类型进行监视)）
+                    //fn(新输入的值，缓存的过去值)
+                    $scope.$watch("txt",function (n,o) {
+                        console.log("新值："+ n + "旧值：" +o);
+                        if(n=="hello"){
+                            alert("欢迎光临！！！"+n);
+                        }
+                    });
+                });
+
+
+1.给值添加上监视
+2.不断记录上一次的值
+3.$apply()->$digest(loop)->$$watchers->0(比较)->同步
+
+对2000个值绑定是性能的极限
+
+mvvm（性能差，用户体验好）->mvc(性能高，用户体验差一点)

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<!--#include file="app/view/header.html"-->
+
+
+<object style="height:40px;width: 100%;" data="app/view/header.html" style="height: auto;width:auto;"></object>
+<div>我是object</div>
+<object data="app/view/footer.html"></object>
+
+<iframe style="height:40px;width: 100%;" src="app/view/header.html" frameborder="0"></iframe>
+<div>我是object</div>
+<iframe src="app/view/footer.html" frameborder="0"></iframe>
+
+
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[]);
+    })()
+</script>
+</body>
+</html>

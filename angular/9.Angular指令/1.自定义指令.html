@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义指令的创建Directive</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+
+<!--<div hello></div>-->
+<!--<hello></hello>-->
+<!--&lt;!&ndash;以下两种不建议使用&ndash;&gt;-->
+<!--<div class="hello"></div>-->
+<!--&lt;!&ndash;hello&ndash;&gt;-->
+<!--<div></div>-->
+
+<!--<hello>-->
+    <!--<table class="table table-bordered">-->
+       <!--<thead>-->
+           <!--<tr>-->
+               <!--<th>hi</th>-->
+               <!--<th>hi</th>-->
+               <!--<th>hi</th>-->
+               <!--<th>hi</th>-->
+           <!--</tr>-->
+       <!--</thead>-->
+    <!--</table>-->
+<!--</hello>-->
+<hello>
+<login pc="danger" tl="用户登录"></login></hello>
+<login pc="primary" tl="管理员登录"></login>
+<login pc="default" tl="手机登录"></login>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .directive("hello",function () {
+                    return {//指令的配置项目
+                        //A:attribute
+                        //E:element
+                        //C:class
+                        //M:注释
+                        restrict:"AECM",//用于定义（限制）自定义指令在页面上的创建方式
+                        template:"<div class='well'>hello<div ng-transclude></div></div>",//模板 template内联//外联templateUrl
+                        replace:false,//默认为true，覆盖,false:不覆盖
+                        transclude:true//转移
+                    }
+                })
+                .directive("login",function () {
+                    return {
+                        scope:{},
+                        restrict:"AE",
+                        templateUrl:"app/templates/login-tips.html",
+
+                        //link方法是angular编译的最后一步
+                        //link方法相当于 指令内部模板的 controller
+                        link:function (scope,element,attr,ctrls) {
+                            console.log(attr["pc"]);
+                            scope.hc = attr["pc"];
+                            scope.title = attr["tl"];
+                            //scope == $scope 他是template与link之间的作用域
+                            //element == jqlite（“hello”）=== $("hello") === angular.element(document.getElementByTagName（“hello”）
+
+                            console.log(element.children());
+                        }
+                    }
+                });
+    })()
+</script>
+</body>
+</html>

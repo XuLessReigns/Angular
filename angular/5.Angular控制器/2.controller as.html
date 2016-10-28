@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1,0,user-scalable=1.0">
+    <title>angular as</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-controller="oneCtrl as o">
+<div ng-click="o.login()">{{o.txt}}</div>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+       angular.module("demo",[])
+               .controller("oneCtrl",function () {
+                   this.txt = "hello";
+                   this.login = function () {
+                       alert(1);
+                   };
+               });
+    })();
+</script>
+</body>
+</html>

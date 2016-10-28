@@ -1,0 +1,117 @@
+在Angularjs项目中，必须首先创建一个根模块，所有的类都应该所属于某一个模块
+
+
+angularjs的启动过程，类似一份windows的启动过程
+
+angularjs是以数据为中心，不能随便操作dom，只有在angular的自定义指令中的link方法中才能使用jquery，操作dom
+
+angular jqlite === jquery
+
+
+模块最小的单位就是：类
+多个类的组合 == 模块
+
+1,模块是开发中用来封装一系列相关业务逻辑的代码包
+  依赖注入(Dependency Injection) 是一个非常简单的概念，伸手-等待。(让DIP、IoC滚蛋)
+
+  Di是软件工程里面非常重要的一种解决模块与模块之间调用(耦合)关系的一种手段
+  模块与模块之间的强依赖
+
+
+2.angular模块之间的关系
+  	继承关系（纵向关系） 
+
+	依赖注入（横向关系）DI
+
+
+var app = angular.module("demo",[]);
+        //第二级模块
+        //这个横向的模块关系的调用，在angular中是采用DI的方式来调用
+        var ctrl = app.controller("oneCtrl",function (oneServ) {
+	    // var s = new Serv();//不易维护，所以由第三方来创建
+            //把依赖的类的创建，不由自己来创建，由第三方来创建，这个就是DI
+            //需要对s进行内存的管理
+            //angular 的内存（注射器）大管家  $injector
+        });
+        //第二级模块,与onectrl是同一级模块
+        var  serv = app.service("oneServ",function () {
+
+        });
+
+
+
+angularjs执行流程
+启动阶段》初始化阶段》编译，链接》运行阶段
+
+
+ng-*   在angular里叫内置的指令（标识）
+
+----------------------- 1 -----------------------
+如ng-app 
+	 //ng-app程序启动指令，标记在html元素上面
+       //ng-app：这个内置的指令是用来标记angularjs的管理边界
+//        ng-app所在的标签内的所有html元素都在angularjs的管理范围
+//        ng-app：用法1.直接在html元素上面添加ng-app
+//        2.ng-app=“”
+//        3.ng-app=“模块名称”
+
+ //step1:创建一个根模块
+        angular.module("demo",[]).controller("oneCtrl",function ($scope) {
+            $scope.msg = "hello angular!";
+        });
+
+
+
+----------------------- 2 -----------------------
+angular.bootstrap（）；
+//如果在当前的页面中包含有ng-app这个指令，angular会自动启动 new
+        //如果不想显示的标识ng-app，我们可以以代码的方式手动启动
+        angular.bootstrap(document,["demo"]);//ng-app="demo"
+//通过制定范围的方式来限定angular的管理范围
+        angular.bootstrap(document.getElementById("box"),["demo"]);//[]继承
+
+ //注意：ng-app这个启动指令一般只能用在angular的宿主页面上
+        //angular spa 只有一个host页面
+
+
+----------------------- 3 -----------------------
+ng表达式    {{(3>1)?"ok":"error"}}
+
+
+----------------------- 4 -----------------------
+ng-model主要用在表单里,但会闪屏
+
+解决办法：
+----------------------- 5 -----------------------
+	1. ng-bind
+	<input type="text" ng-model="txt">
+	<span ng-bind="txt"></span>
+	
+----------------------- 6 -----------------------
+	2.添加class="ng-cloak"
+	<input type="text" ng-model="txt">
+	<span ng-cloak class="ng-cloak">{{txt}}</span>
+	<input type="text" ng-model="txt2">
+	<span ng-cloak class="ng-cloak">{{txt2}}</span>
+
+
+----------------------- 7 -----------------------
+//angular.element == $/jquery
+ //angular.element() == $()
+ //当本页面中没有引用外部的jquery，angular.element == jqlite;
+
+//注意,不能在controller里面进行dom的操作
+//只能在自定义的指令里的link方法里面操作doc
+angular.element(document.getElementById("bx")).addClass("box")
+//angular.element("#bx").addClass("box")//跟上面等同
+
+
+----------------------- 8 -----------------------
+//angular 事件 click blur 。。。（不要使用）
+        //ng-click  ng-blur（最好使用以ng-blur等事件。。。）
+        //ng-*  都会引起angular内部检查（dirty checking）
+        angular.module("demo",[]).controller("oneCtrl",function ($scope) {
+            $scope.click = function () {
+                alert(1);
+            }
+        });

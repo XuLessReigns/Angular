@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<father>
+    <son>
+        <grandson></grandson>
+    </son>
+</father>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .directive("father",function () {
+                    return {
+
+                        restrict:"AE",
+                        template:"<div class='well' ng-transclude>father</div>",
+                        replace:false,
+                        transclude:true,
+                        //controller指令的内的controller，是用来提供公开的方法给其他关联指令调用的
+                        controller:function ($scope) {
+                            this.test = function () {
+                                alert("from father controller");
+                            }
+                        },
+                        link:function (scope,element,attr) {
+
+                        }
+                        
+                    }
+                })
+                .directive("son",function () {
+                    return {
+                        //?^  向上模糊查找，没找到不会报错
+                        require:"?^father",//require表示继承  后面接的是""或[]
+                        restrict:"AE",
+                        template:"<div class='well' ng-transclude>son</div>",
+                        replace:false,
+                        transclude:true,
+                        link:function (scope,element,attr,ctrl) {
+                            ctrl.test();
+                        }
+                    }
+                })
+                .directive("grandson",function () {
+                    return {
+                        require:["?^father","?^son"],//继承多个指令
+                        restrict:"AE",
+                        template:"<div class='well'>grandson</div>",
+                        link:function (scope,element,attr,ctrl) {//这时ctrl就是一个数组了
+                            ctrl[0].test();
+                        }
+                    }
+                });
+    })()
+</script>
+</body>
+</html>

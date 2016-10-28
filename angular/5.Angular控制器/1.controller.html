@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1,0,user-scalable=1.0">
+    <title>angular控制器</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-controller="oneCtrl">
+<div class="panle panel-danger">
+    <div class="panel-heading">
+        <div class="panel-title">用户登入</div>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <label for="name">用户名</label><input id="name" type="text" ng-model="userInfo.userName"><br>
+            <label for="pass">密码</label><input id="pass" type="password" ng-model="userInfo.pass"><br>
+            <button ng-click="login()">登入</button>
+        </form>
+    </div>
+</div>
+
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        //controller：职业：控制器是对view的抽象
+        //控制器包含view的静态的属性和动态的方法
+        //控制器与view是一对一的关系
+        //VM model of view view的模型
+        //控制器是用来接收view的事件，响应view的请求
+
+        //1.首先创建根模块
+//        2.在根模块创建控制器
+//        控制器的命名：业务名+Controller;如：loginController
+//        $ 是一区别angular内部类与自定的类的标识，$$ 私有方法
+//        function ($scope)告诉我$injector
+//        所在angular里面不能直接对类进行实例化（否则耦合性太大），只能先声明，后使用
+        angular.module("demo",[]).controller("oneCtrl",function ($scope) {
+            //$scope vm $scope用于存放view的抽象（属性和方法）
+            $scope.userInfo = {
+                userName:"",
+                pass:""
+            };
+            $scope.login = function () {
+                alert($scope.userInfo.userName + "-- "+$scope.userInfo.pass);
+            }
+        });
+    })();
+</script>
+</body>
+</html>

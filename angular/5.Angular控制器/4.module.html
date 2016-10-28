@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1,0,user-scalable=1.0">
+    <title>angular as</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body >
+<div ng-controller="rootone">{{goodsx}}</div>
+<div ng-controller="sonone">{{goods}}</div>
+<div ng-controller="gtandsonone">{{goods}}</div>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        var grandson = angular.module("grandson",[]);
+        grandson.controller("gtandsonone",function ($scope) {
+            $scope.goods = "grandson goods";
+        });
+        var son = angular.module("son",[]);
+        son.controller("sonone",function ($scope) {
+            $scope.goods = "son goods";
+        });
+        //root继承grandson，son模块也就是拥有了grandson，son模块，但他们之间依然相互独立
+        var root = angular.module("root",["son","grandson"]);
+        root.controller("rootone",function ($scope) {
+            $scope.goodsx = "root goods";
+        });
+    })();
+</script>
+</body>
+</html>

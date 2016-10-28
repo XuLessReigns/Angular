@@ -1,0 +1,13 @@
+
+<div class="panle panel-{{hc}}">
+    <div class="panel-heading">
+        <div class="panel-title">{{title}}</div>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <label for="name">用户名</label><input id="name" type="text" ng-model="userInfo.userName"><br>
+            <label for="pass">密码</label><input id="pass" type="password" ng-model="userInfo.pass"><br>
+            <button ng-click="login()">登入</button>
+        </form>
+    </div>
+</div>

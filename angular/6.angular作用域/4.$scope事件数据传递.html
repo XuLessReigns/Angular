@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+
+<div class="well" ng-controller="one">
+    {{msg}}
+    <div class="well" ng-controller="two">
+
+        <a class="btn btn-danger" ng-click="sendEvent()">sendEvent</a>
+        <div class="well" ng-controller="three">
+            {{msg}}
+        </div>
+    </div>
+</div>
+
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .controller("one",["$scope",function(s){
+                    s.$on("sendOne",function(event,data){
+                        s.msg = data;
+                    });
+
+                }])
+                .controller("two",["$scope",function(s){
+                    //$scope.$emit //是向上一级控制器发送事件 冒泡
+                    //$scope.$broadcast //向下传递事件 捕获
+                    //$scope.$on //用来接收事件的值
+
+                    s.sendEvent = function(){
+                        s.$emit("sendOne","a gift from two ");
+                        s.$broadcast("sendThree","a command from two");
+                    }
+                }])
+                .controller("three",["$scope",function(s){
+                    s.$on("sendThree",function(event,data){
+                        s.msg = data;
+                    });
+                }])
+
+    })()
+</script>
+</body>
+</html>

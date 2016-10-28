@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-controller="loginCtrl">
+<a href="#/login">login</a>
+<a href="#/mian">main</a>
+<div class="well" ui-view></div>
+<script type="text/ng-template" id="login.html">
+    <div class="panle panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">{{title}}</div>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal">
+                <label for="name">用户名</label><input id="name" type="text" ng-model="userInfo.userName"><br>
+                <label for="pass">密码</label><input id="pass" type="password" ng-model="userInfo.pass"><br>
+                <button ng-click="login()">登入</button>
+            </form>
+        </div>
+    </div>
+</script>
+<script src="../node_modules/angular/angular.js"></script>
+<script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script>
+    (function(){
+        angular.module("demo",["ui.router"])
+                .config(function ($stateProvider) {
+                    $stateProvider.state("login",{
+                        url:"/login",
+                        templateUrl:"login.html",
+                        controller:"loginCtrl"
+                    }).state("mian",{
+                        url:"/mian",
+                        templateUrl:"app/view/mian.html",
+                        controlller:"mianCtrl"
+                    })
+                })
+                .controller("loginCtrl",function ($scope) {
+                    $scope.title = "用户名：XXX";
+                })
+                .controller("mianCtrl",function ($scope) {
+
+                });
+    })()
+</script>
+</body>
+</html>

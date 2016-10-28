@@ -1,0 +1,1 @@
+var serv = angular.module("com.bj.jshop.services",[]);

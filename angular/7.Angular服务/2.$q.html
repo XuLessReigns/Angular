@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-controller="oneCtrl">
+
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    (function(){
+        angular.module("demo",[])
+                .provider("oneProvider",function () {
+                    //服务就是一个类 ：属性和方法（公有方法和私有方法）
+                    this.$get = function ($http,$q) {
+                        var url = "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=angular&json=1&p=3&sid=1466_21450_18280_21079_17001_21407_21042_21378_21191_21339&req=2&pbs=angular%E6%B2%A1%E6%9C%89%E6%A8%A1%E5%9D%97%3F&cb=JSON_CALLBACK&csor=0&pwd=angula&cb=xzw&_=1477467851657";
+                        //表示内部方法，不对外暴露
+                        function _getList() {
+
+                            //为我们的http请求创建一个延期请求
+                            var defered = $q.defer();
+                            $http({
+                                url:url,
+                                method:"JSONP"
+                            }).success(function (data) {
+                                defered.resolve(data);
+                            }).error(function (data) {
+                                defered.reject(data);
+                            });
+                            return defered.promise;
+                        }
+                        return {
+                            getBaiduList:_getList
+                        };
+                    };
+
+                })
+                .controller("oneCtrl",function ($scope,$q,oneProvider) {
+                    //console.log(oneProvider.getBaiduList());
+                    oneProvider.getBaiduList().then(function (success) {
+                        console.log(success);
+                    }),function (error) {
+                        console.log(error);
+                    },function (notice) {
+                        console.log(notice);
+                    }
+                });
+    })()
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+	
+------------------1-----------------
+//controller：职业：控制器是对view的抽象
+        //控制器包含view的静态的属性和动态的方法
+        //控制器与view是一对一的关系
+        //VM model of view view的模型
+        //控制器是用来接收view的事件，响应view的请求
+
+ //1.首先创建根模块
+//        2.在根模块创建控制器
+//        控制器的命名：业务名+Controller;如：loginController
+//        $ 是一区别angular内部类与自定的类的标识，$$ 私有方法
+//        function ($scope)告诉$injector
+//        在angular里面不能直接对类进行实例化（否则耦合性太大），只能先声明，后使用
+
+
+ //****$scope vm $scope用于存放view的抽象（属性和方法）*******
+
+------------------2-----------------
+当你不想看到$scope的时候就要用oneCtrl as，但是这样的话关于$scope的部分功能用不了
+<body ng-controller="oneCtrl as o">
+<div ng-click="o.login()">{{o.txt}}</div>
+
+------------------3-----------------
+$injector的两种方式
+
+ angular.module("demo",[])
+         .controller("oneCtrl",function ($scope,$rootScope) {
+                 //$injector
+                 $scope.msg = "hi";
+          })
+        //最好是采用以下写法
+         .controller("twoCtrl",["$scope","$rootScope",function ($s,$rs) {
+              $s.msg = "hello";
+          }]);
+
+------------------4-----------------
+模块的关系
+ var grandson = angular.module("grandson",[]);
+        grandson.controller("gtandsonone",function ($scope) {
+            $scope.goods = "grandson goods";
+        });
+        var son = angular.module("son",[]);
+        son.controller("sonone",function ($scope) {
+            $scope.goods = "son goods";
+        });
+        //root继承grandson，son模块也就是拥有了grandson，son模块，但他们之间依然相互独立
+        var root = angular.module("root",["son","grandson"]);
+        root.controller("rootone",function ($scope) {
+            $scope.goodsx = "root goods";
+        });
+根模块是root；
+<div ng-controller="rootone">{{goodsx}}</div> --》root goods
+<div ng-controller="sonone">{{goods}}</div>    --》son goods
+<div ng-controller="gtandsonone">{{goods}}</div>  --》grandson goods
+
+------------------5-----------------
+控制器的之间的继承
+//当我们的html元素出现嵌套关系的时候，内层继承外层的变量
+
+<div ng-controller="oneCtrl">
+    {{msg}}      ----》1
+    <div ng-controller="twoCtrl">
+        {{msg}}  ----》1
+        <div ng-controller="threeCtrl">
+            {{msg}} ----》1
+        </div>
+    </div>
+</div>
+
+------------------6-----------------
+//run：是angular中的main方法,是整个angular的入口方法
+        //run只会在整个angular生命周期内，只会调用一次
+	angular.module("demo",[])
+                //整个程序级别
+                .run(function () {
+                    console.log("hello run");
+	//条件的判断 localstorage
+                    window.localStorage.setItem("ng","haha");
+                });
+
+-----------------7-----------------
+
+三级联动
+ng-model="myData.province"    ng-options="p.province for p in CityData"
+ng-model="myData.city"   ng-options="c.city for c in myData.province.cities"
+ng-model="myData.area"    ng-options="a for a in myData.city.areas"
+
+
+ angular.module("demo",[])
+                .controller("oneCtrl",function ($scope) {
+                    $scope.myData = {
+                        province:"",
+                        city:"",
+                        area:""
+                    }
+                    $scope.CityData = [
+                        {"province":"省1","cities":[
+                            {"city":"市1A","areas":["区1A1","区1A2"]},
+                            {"city":"市1B","areas":["区1B1","区1B2"]}
+                        ]},
+                        {"province":"省2","cities":[
+                            {"city":"市2A","areas":["区2A1","区2A2"]},
+                            {"city":"市2B","areas":["区2B1","区2B2"]}
+                        ]},
+                        {"province":"省3","cities":[
+                            {"city":"市3A","areas":["区3A1","区3A2"]},
+                            {"city":"市3B","areas":["区3B1","区3B2"]}
+                        ]}
+                    ];
+
+                });
+
+
+

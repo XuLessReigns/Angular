@@ -1,0 +1,118 @@
+任何一个mvc框架  都有route
+
+http://
+www.baidu.com:80
+
+/goods/2121/路由地址
+1.第一步：路由检测到有URL访问，路由开始分解url
+
+2.第二步：拿到路由地址之后，在router表中查找url地址与controller和view的对应目录
+
+
+ng-include 解决html页面模块化问题
+
+
+路由不属于rootModel模块内的
+bower install angular-route --save-dev下载路由  
+angular-router  pc端
+bower install angular-ui-router --save-dev
+ui-router   移动端
+
+--------------------1----------------------
+引入外部html文件
+
+<object data="app/view/footer.html"></object>
+<iframe src="app/view/footer.html" frameborder="0"></iframe>
+<!--#include file="app/view/footer.html"-->
+
+-----------------------2----------------------
+ng-include   解决html页面模块化问题（外部引用）
+
+
+<a  ng-click="gourl('header')">go header</a>
+<a  ng-click="gourl('footer')">go footer</a>
+<div ng-include="src"></div>
+
+ .controller("one",function ($scope) {
+                   // $scope.url = "app/view/header.html";
+                    $scope.gourl = function (url) {
+                        if(url == "header"){
+                            $scope.src = "app/view/header.html";
+                        }else {
+                            $scope.src = "app/view/footer.html";
+                        }
+                    }
+                });
+
+-------------------------3------------------------
+ng-include   解决html页面模块化问题（内部引用）
+
+<a  ng-click="gourl('header')">go header</a>
+<a  ng-click="gourl('footer')">go footer</a>
+<div ng-include="src"></div>
+
+<script type="text/ng-template" id="one.html">
+    <div class="well">
+        hello one.html
+    </div>
+</script>
+ .controller("one",function ($scope) {
+                   // $scope.url = "app/view/header.html";
+                    $scope.gourl = function (url) {
+                        if(url == "header"){
+                            $scope.src = "app/view/header.html";
+                        }else {
+                            $scope.src = "app/view/footer.html";
+                        }
+                    }
+                });
+
+----------------------4------------------------
+<a  ng-click="gourl('header')">go header</a>
+<a  ng-click="gourl('footer')">go footer</a>
+<div ng-include="src"></div>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+ angular.module("demo",["ngRoute"])
+                .config(function ($routeProvider) {
+                    $routeProvider.when("/login",{
+                        templateUrl:"login.html",
+                        controller:"loginCtrl"
+                    })
+                })
+                .controller("loginCtrl",function ($scope) {
+                    $scope.title = "用户名：XXX"
+                    $scope.gourl = function (url) {
+                        if(url == "header"){
+                            $scope.src = "login.html";
+                        }else {
+                            $scope.src = "app/view/mian.html";
+                        }
+                    }
+                });
+
+---------------------------5--------------------
+
+angular-route.js 路由定义5步走:
+1.bower install angular-route
+2.在host页面中引用angular-route.js
+3.angular-route是一个独立模块，
+  angular.module("demo",["ngRoute"])
+4. config(function(){
+         //配置路由表
+         $routeProvider.when
+   })
+5.定义一个容器用来显示页面 ng-view
+
+--------------------ng-view(pc) vs ui-view(mobile)-------------------------------
+
+angular-ui-router.js 路由定义5步走:
+1.bower install angular-ui-router
+2.在host页面中引用angular-ui-router.js
+3.angular-ui-router是一个独立模块，
+  angular.module("demo",["ui-router"])
+4. config(function(){
+         //配置路由表
+         $stateProvider.state()
+   })
+5.定义一个容器用来显示页面 ui-view
+
